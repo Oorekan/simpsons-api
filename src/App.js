@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import DisplaySimpsonCharacter from "./components/DisplaySimpsonCharacter";
+import React, { useState } from "react";
+import axios from "axios";
 
-function App() {
+export default function App() {
+  const example = {
+    quote: "Not cool !",
+    character: "Thomas Torvalds",
+    image:
+      "https://cdn.discordapp.com/attachments/815964927515820052/819923884354175017/unknown.png",
+  };
+  const [simpsonCharacter, setSimpsonCharacter] = useState(example);
+  const getSimpsonCharacter = () => {
+    axios
+      .get("https://simpsons-quotes-api.herokuapp.com/quotes")
+      .then((response) => response.data)
+      .then((data) => {
+        setSimpsonCharacter(data[0]);
+      });
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button type="button" onClick={getSimpsonCharacter}>
+        Get a Simpson Character !
+      </button>
+      <DisplaySimpsonCharacter simpsonCharacter={simpsonCharacter} />
     </div>
   );
 }
-
-export default App;
